@@ -1,4 +1,5 @@
 # MoveX: Fitness App
+#Projeto PDM
 
 ![Kotlin](https://img.shields.io/badge/Kotlin-7F52FF?style=for-the-badge&logo=kotlin&logoColor=white)
 ![Android Studio](https://img.shields.io/badge/Android%20Studio-3DDC84?style=for-the-badge&logo=android-studio&logoColor=white)
@@ -30,8 +31,8 @@ A crescente prevalência de um estilo de vida sedentário representa um desafio 
 
 - **Frontend:** Desenvolvido em Jetpack Compose.
 - **Backend:** API RESTful em Spring Boot.
-- **Banco de Dados:** PostgreSQL gerenciado com Hibernate.
-- **Camadas:** Interface do Usuário, Lógica de Negócio, Persistência de Dados, Segurança.
+- **Banco de Dados:** ?
+- **Camadas:** Interface do Usuário, Lógica de Negócio, Persistência de Dados.
 
 ## 📊 Diagramas
 
