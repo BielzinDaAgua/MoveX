@@ -1,6 +1,7 @@
 # MoveX: Fitness App
 ## Projeto PDM
-<img src="LOGO MOVEX" alt="app/src/main/res/drawable/MoveX.png" width="100px">
+
+![Logo de MoveX]()
 ![IFPB - Campus João Pessoa]()
 
 ![Kotlin](https://img.shields.io/badge/Kotlin-7F52FF?style=for-the-badge&logo=kotlin&logoColor=white)
