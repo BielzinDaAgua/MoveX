@@ -11,7 +11,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.movex.R
 
@@ -22,6 +24,7 @@ fun SignUpScreen(navController: NavController) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var confirmPassword by remember { mutableStateOf("") }
+    var errorMessage by remember { mutableStateOf("") }
 
     Column(
         modifier = Modifier
@@ -108,9 +111,27 @@ fun SignUpScreen(navController: NavController) {
 
         Spacer(modifier = Modifier.height(16.dp))
 
+        if (errorMessage.isNotEmpty()) {
+            Text(
+                text = errorMessage,
+                color = Color.Red,
+                style = MaterialTheme.typography.bodyLarge,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth()
+            )
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
         Button(
             onClick = {
-                navController.navigate("login_screen")
+                if (username.isEmpty() || email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
+                    errorMessage = "Todos os campos são obrigatórios"
+                } else if (password != confirmPassword) {
+                    errorMessage = "As senhas não coincidem"
+                } else {
+                    navController.navigate("login_screen")
+                }
             },
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color.Black,
@@ -118,7 +139,7 @@ fun SignUpScreen(navController: NavController) {
             ),
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text(text = "Casdatre")
+            Text(text = "Cadastrar")
         }
     }
 }
