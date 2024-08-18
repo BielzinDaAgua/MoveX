@@ -33,7 +33,7 @@ fun LoginScreen(navController: NavController) {
         verticalArrangement = Arrangement.Top
     ) {
         Image(
-            painter = painterResource(id = R.drawable.movex_logo),
+            painter = painterResource(id = R.drawable.movex_png),
             contentDescription = "MoveX Logo",
             modifier = Modifier
                 .fillMaxWidth()

@@ -25,7 +25,7 @@ fun HomeScreen(navController: NavController) {
         verticalArrangement = Arrangement.Center
     ) {
         Image(
-            painter = painterResource(id = R.drawable.movex_logo),
+            painter = painterResource(id = R.drawable.movex_png),
             contentDescription = "MoveX Logo",
             modifier = Modifier
                 .fillMaxWidth()
@@ -35,7 +35,7 @@ fun HomeScreen(navController: NavController) {
         Spacer(modifier = Modifier.height(32.dp))
 
         Text(
-            text = "A Persistência Realiza O Impossível.",
+            text = "A persistência realiza o impossível.",
             style = MaterialTheme.typography.headlineSmall,
             color = Color.Black,
             textAlign = TextAlign.Center,
