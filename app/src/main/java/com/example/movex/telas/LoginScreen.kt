@@ -107,7 +107,7 @@ fun LoginScreen(navController: NavController) {
                 scope.launch {
                     val user = usuarioDAO.autenticarUsuario(email, password)
                     if (user != null) {
-                        navController.navigate("home_screen")
+                        navController.navigate("main_screen")
                     } else {
                         errorMessage = "Usuário ou senha incorretos"
                     }
