@@ -14,6 +14,9 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.movex.R
+import com.example.movex.model.Usuario
+import com.example.movex.model.UsuarioDAO
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -22,6 +25,9 @@ fun SignUpScreen(navController: NavController) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var confirmPassword by remember { mutableStateOf("") }
+    var errorMessage by remember { mutableStateOf("") }
+    val usuarioDAO = UsuarioDAO()
+    val scope = rememberCoroutineScope()
 
     Column(
         modifier = Modifier
@@ -94,7 +100,7 @@ fun SignUpScreen(navController: NavController) {
         TextField(
             value = confirmPassword,
             onValueChange = { confirmPassword = it },
-            label = { Text("Confirme a senha", color = Color.White) },
+            label = { Text("Confirmar Senha", color = Color.White) },
             modifier = Modifier
                 .fillMaxWidth()
                 .background(Color.Gray, shape = RoundedCornerShape(8.dp)),
@@ -108,6 +114,63 @@ fun SignUpScreen(navController: NavController) {
 
         Spacer(modifier = Modifier.height(16.dp))
 
+        if (errorMessage.isNotEmpty()) {
+            Text(
+                text = errorMessage,
+                color = Color.Red,
+                style = MaterialTheme.typography.bodyLarge,
+                modifier = Modifier.fillMaxWidth(),
+                textAlign = androidx.compose.ui.text.style.TextAlign.Center
+            )
+        }
+
+        Spacer(modifier = Modifier.height(32.dp))
+
+        Button(
+            onClick = {
+                if (password == confirmPassword) {
+                    scope.launch {
+                        val novoUsuario = Usuario(
+                            id = null,  // Gere um ID único
+                            nome = username,
+                            email = email,
+                            senha = password
+                        )
+
+                        try {
+                            usuarioDAO.adicionarUsuario(novoUsuario)
+                            navController.navigate("login_screen")
+                        } catch (e: Exception) {
+                            // Trate a exceção conforme necessário
+                            errorMessage = "Erro ao criar a conta: ${e.message}"
+                        }
+                    }
+                } else {
+                    errorMessage = "As senhas não coincidem"
+                }
+            },
+
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color.Black,
+                contentColor = Color.White
+            ),
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text(text = "Cadastrar")
+        }
+
+        Spacer(modifier = Modifier.weight(1f))
+
+        Text(
+            text = "Já tem uma conta? Faça login aqui!",
+            style = MaterialTheme.typography.bodyLarge,
+            color = Color.Black,
+            modifier = Modifier.fillMaxWidth(),
+            textAlign = androidx.compose.ui.text.style.TextAlign.Center
+        )
+
+        Spacer(modifier = Modifier.height(8.dp))
+
         Button(
             onClick = {
                 navController.navigate("login_screen")
@@ -116,9 +179,14 @@ fun SignUpScreen(navController: NavController) {
                 containerColor = Color.Black,
                 contentColor = Color.White
             ),
-            modifier = Modifier.fillMaxWidth()
+            shape = RoundedCornerShape(50),
+            modifier = Modifier
+                .wrapContentWidth()
+                .padding(horizontal = 20.dp)
         ) {
-            Text(text = "Casdatre")
+            Text(text = "Login")
         }
+
+        Spacer(modifier = Modifier.height(16.dp))
     }
 }

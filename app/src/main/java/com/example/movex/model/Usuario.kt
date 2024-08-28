@@ -1,8 +1,8 @@
-package com.example.movex.models
+package com.example.movex.model
 
 data class Usuario(
-    val id: Int,
-    val nome: String,
-    val email: String,
-    val senha: String
+    val id: Int? = null,
+    val nome: String? = null,
+    val email: String? = null,
+    val senha: String? = null
 )

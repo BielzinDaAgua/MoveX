@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "142166464667",
+    "project_id": "movex-51484",
+    "storage_bucket": "movex-51484.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:142166464667:android:5824ea60add4fdb7ff0e3e",
+        "android_client_info": {
+          "package_name": "com.example.movex"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD-eBFKr5J3QIXpWp_KZoy3RvEU1MJyEJQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

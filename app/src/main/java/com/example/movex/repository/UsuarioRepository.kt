@@ -1,5 +1,5 @@
 import androidx.compose.runtime.mutableStateListOf
-import com.example.movex.models.Usuario
+import com.example.movex.model.Usuario
 
 object UsuarioRepository {
     private val usuarios = mutableStateListOf<Usuario>()

@@ -16,13 +16,17 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.movex.R
+import com.example.movex.model.UsuarioDAO
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginScreen(navController: NavController) {
-    var username by remember { mutableStateOf("") }
+    var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var errorMessage by remember { mutableStateOf("") }
+    val usuarioDAO = UsuarioDAO()
+    val scope = rememberCoroutineScope()
 
     Column(
         modifier = Modifier
@@ -54,9 +58,9 @@ fun LoginScreen(navController: NavController) {
         )
 
         OutlinedTextField(
-            value = username,
-            onValueChange = { username = it },
-            label = { Text("Usuário", color = Color.White) },
+            value = email,
+            onValueChange = { email = it },
+            label = { Text("E-mail", color = Color.White) },
             modifier = Modifier
                 .fillMaxWidth()
                 .background(Color.Gray, shape = RoundedCornerShape(8.dp)),
@@ -100,10 +104,13 @@ fun LoginScreen(navController: NavController) {
 
         Button(
             onClick = {
-                if (username.isEmpty() || password.isEmpty()) {
-                    errorMessage = "Usuário e senha são obrigatórios"
-                } else {
-                    navController.navigate("home_screen")
+                scope.launch {
+                    val user = usuarioDAO.autenticarUsuario(email, password)
+                    if (user != null) {
+                        navController.navigate("home_screen")
+                    } else {
+                        errorMessage = "Usuário ou senha incorretos"
+                    }
                 }
             },
             colors = ButtonDefaults.buttonColors(
