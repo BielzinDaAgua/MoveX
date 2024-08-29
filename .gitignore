@@ -23,8 +23,6 @@ Thumbs.db
 
 # Jetpack Compose
 compose/
-build/
-out/
 
 # Miscellaneous
 *.log
@@ -40,28 +38,15 @@ out/
 # IntelliJ
 *.idea/
 *.iws
-*.iml
 *.ipr
 *.gradle/
-*.gradle/
-*.idea/
-*.log
 
 # Files and directories created by various IDEs
-.idea/
-*.iws
-*.iml
-*.ipr
-*.gradle/
-.gradle/
 
 # Exclude build artifacts
-build/
-out/
 *.apk
 *.ap_
 *.dex
-*.class
 *.jar
 
 # Exclude the local gradle distribution
