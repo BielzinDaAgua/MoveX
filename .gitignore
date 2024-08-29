@@ -1,15 +1,68 @@
+# Gradle
+.gradle/
+build/
+out/
+!gradle/wrapper/gradle-wrapper.jar
+!gradle/wrapper/gradle-wrapper.properties
+
+# Android Studio
+.idea/
 *.iml
-.gradle
-/local.properties
-/.idea/caches
-/.idea/libraries
-/.idea/modules.xml
-/.idea/workspace.xml
-/.idea/navEditor.xml
-/.idea/assetWizardSettings.xml
-.DS_Store
-/build
-/captures
-.externalNativeBuild
-.cxx
+*.hprof
+*.cxx/
 local.properties
+
+# Mac
+.DS_Store
+
+# Windows
+Thumbs.db
+
+# Kotlin
+*.class
+
+# Jetpack Compose
+compose/
+build/
+out/
+
+# Miscellaneous
+*.log
+*.tmp
+*.swp
+*.swo
+*.sublime-workspace
+*.sublime-project
+*.kibana
+*.project
+*.classpath
+
+# IntelliJ
+*.idea/
+*.iws
+*.iml
+*.ipr
+*.gradle/
+*.gradle/
+*.idea/
+*.log
+
+# Files and directories created by various IDEs
+.idea/
+*.iws
+*.iml
+*.ipr
+*.gradle/
+.gradle/
+
+# Exclude build artifacts
+build/
+out/
+*.apk
+*.ap_
+*.dex
+*.class
+*.jar
+
+# Exclude the local gradle distribution
+gradle/
