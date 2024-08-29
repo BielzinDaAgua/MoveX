@@ -10,7 +10,8 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 
 @Composable
-fun MainScreen(navController: NavController){
+fun MainScreen(navController: NavController, userId: Int){
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -25,14 +26,14 @@ fun MainScreen(navController: NavController){
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        Button(onClick = { /* Lógica para a conta */ }) {
-            Text(text = "Conta")
+        Button(onClick = { navController.navigate("user_details_screen/$userId") }) {
+            Text(text = "Editar a conta")
         }
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        Button(onClick = { /* Lógica para remover */ }) {
+        /*Button(onClick = { *//* Lógica para remover *//* }) {
             Text(text = "Remover")
-        }
+        }*/
     }
 }

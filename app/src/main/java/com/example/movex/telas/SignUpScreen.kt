@@ -154,39 +154,37 @@ fun SignUpScreen(navController: NavController) {
                 containerColor = Color.Black,
                 contentColor = Color.White
             ),
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth().height(50.dp)
         ) {
             Text(text = "Cadastrar")
         }
 
         Spacer(modifier = Modifier.weight(1f))
 
-        Text(
-            text = "Já tem uma conta? Faça login aqui!",
-            style = MaterialTheme.typography.bodyLarge,
-            color = Color.Black,
-            modifier = Modifier.fillMaxWidth(),
-            textAlign = androidx.compose.ui.text.style.TextAlign.Center
-        )
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        Button(
-            onClick = {
-                navController.navigate("login_screen")
-            },
-            colors = ButtonDefaults.buttonColors(
-                containerColor = Color.Black,
-                contentColor = Color.White
-            ),
-            shape = RoundedCornerShape(50),
-            modifier = Modifier
-                .wrapContentWidth()
-                .padding(horizontal = 20.dp)
+        Spacer(modifier = Modifier.weight(1f))
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center,
+            modifier = Modifier.fillMaxWidth()
         ) {
-            Text(text = "Login")
-        }
+            Text(
+                text = "Já tem uma conta?",
+                style = MaterialTheme.typography.bodyLarge,
+                color = Color.Black
+            )
 
+            TextButton(
+                onClick = {
+                    navController.navigate("login_screen")
+                },
+            ) {
+                Text(
+                    text = "Faça login aqui!",
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = Color.Red
+                )
+            }
+        }
         Spacer(modifier = Modifier.height(16.dp))
     }
 }

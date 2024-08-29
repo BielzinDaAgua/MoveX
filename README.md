@@ -27,7 +27,7 @@ A crescente prevalência de um estilo de vida sedentário representa um desafio 
 - **Linguagem:** Kotlin
 - **Interface:** Jetpack Compose
 - **IDE:** Android Studio
-- **Banco de Dados:** ?
+- **Banco de Dados:** Firebase
 
 ## 🏗️ Arquitetura
 

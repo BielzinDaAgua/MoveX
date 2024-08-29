@@ -107,7 +107,8 @@ fun LoginScreen(navController: NavController) {
                 scope.launch {
                     val user = usuarioDAO.autenticarUsuario(email, password)
                     if (user != null) {
-                        navController.navigate("main_screen")
+                        val userId = usuarioDAO.obterIdUsuarioPorEmail(email)
+                        navController.navigate("main_screen/$userId")
                     } else {
                         errorMessage = "Usuário ou senha incorretos"
                     }
@@ -117,39 +118,35 @@ fun LoginScreen(navController: NavController) {
                 containerColor = Color.Black,
                 contentColor = Color.White
             ),
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth().height(50.dp)
         ) {
             Text(text = "Login")
         }
 
         Spacer(modifier = Modifier.weight(1f))
-
-        Text(
-            text = "Não tem uma conta? Cadastre-se aqui!",
-            style = MaterialTheme.typography.bodyLarge,
-            color = Color.Black,
-            textAlign = TextAlign.Center,
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center,
             modifier = Modifier.fillMaxWidth()
-        )
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        Button(
-            onClick = {
-                navController.navigate("signup_screen")
-            },
-            colors = ButtonDefaults.buttonColors(
-                containerColor = Color.Black,
-                contentColor = Color.White
-            ),
-            shape = RoundedCornerShape(50),
-            modifier = Modifier
-                .wrapContentWidth()
-                .padding(horizontal = 20.dp)
         ) {
-            Text(text = "Cadastrar")
-        }
+            Text(
+                text = "Não tem uma conta?",
+                style = MaterialTheme.typography.bodyLarge,
+                color = Color.Black
+            )
 
+            TextButton(
+                onClick = {
+                    navController.navigate("signup_screen")
+                },
+            ) {
+                Text(
+                    text = "Cadastre-se aqui!",
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = Color.Red
+                )
+            }
+        }
         Spacer(modifier = Modifier.height(16.dp))
     }
 }

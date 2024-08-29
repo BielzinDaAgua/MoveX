@@ -20,7 +20,7 @@ fun HomeScreen(navController: NavController) {
         modifier = Modifier
             .fillMaxSize()
             .background(Color.White)
-            .padding(16.dp),
+            .padding(12.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
@@ -29,10 +29,10 @@ fun HomeScreen(navController: NavController) {
             contentDescription = "MoveX Logo",
             modifier = Modifier
                 .fillMaxWidth()
-                .height(550.dp)
+                .height(400.dp)
         )
 
-        Spacer(modifier = Modifier.height(32.dp))
+        Spacer(modifier = Modifier.height(40.dp))
 
         Text(
             text = "A persistência realiza o impossível.",
@@ -62,9 +62,9 @@ fun HomeScreen(navController: NavController) {
                 containerColor = Color.Black,
                 contentColor = Color.White
             ),
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth().height(50.dp)
         ) {
-            Text(text = "Login")
+            Text(text = "Vamos começar")
         }
     }
 }

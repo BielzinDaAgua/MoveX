@@ -55,4 +55,25 @@ class UsuarioDAO {
         val allUsers = listarUsuarios()
         return (allUsers.maxOfOrNull { it.id ?: 0 } ?: 0) + 1
     }
+
+    // Função para obter um usuário pelo ID
+    suspend fun obterUsuarioPorId(id: Int): Usuario? {
+        val documentSnapshot = usuariosCollection.document(id.toString()).get().await()
+        return documentSnapshot.toObject<Usuario>()
+    }
+
+    suspend fun obterIdUsuarioPorEmail(email: String): Int? {
+        val querySnapshot: QuerySnapshot = usuariosCollection
+            .whereEqualTo("email", email)
+            .get()
+            .await()
+
+        return if (!querySnapshot.isEmpty) {
+            val usuario = querySnapshot.documents[0].toObject<Usuario>()
+            usuario?.id
+        } else {
+            null
+        }
+    }
+
 }
