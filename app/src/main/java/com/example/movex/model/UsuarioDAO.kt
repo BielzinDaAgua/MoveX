@@ -12,6 +12,15 @@ class UsuarioDAO {
 
     // Função para adicionar um novo usuário
     suspend fun adicionarUsuario(usuario: Usuario) {
+        val querySnapshot = usuariosCollection
+            .whereEqualTo("email", usuario.email)
+            .get()
+            .await()
+
+        if (!querySnapshot.isEmpty) {
+            throw IllegalArgumentException("O email já está em uso.")
+        }
+
         val newId = gerarNovoId()
         val usuarioComId = usuario.copy(id = newId)
         usuariosCollection.document(newId.toString()).set(usuarioComId).await()
