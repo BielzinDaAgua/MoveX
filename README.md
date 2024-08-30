@@ -27,13 +27,13 @@ A crescente prevalência de um estilo de vida sedentário representa um desafio 
 - **Linguagem:** Kotlin
 - **Interface:** Jetpack Compose
 - **IDE:** Android Studio
-- **Banco de Dados:** Firebase
+- **Banco de Dados:** Firestore
 
 ## 🏗️ Arquitetura
 
 - **Frontend:** Desenvolvido em Jetpack Compose.
 - **Backend:** API RESTful em Spring Boot.
-- **Banco de Dados:** ?
+- **Banco de Dados:** Firestore
 - **Camadas:** Interface do Usuário, Lógica de Negócio, Persistência de Dados.
 
 ## 📊 Diagramas
