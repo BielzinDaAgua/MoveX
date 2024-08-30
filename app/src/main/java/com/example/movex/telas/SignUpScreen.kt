@@ -131,7 +131,7 @@ fun SignUpScreen(navController: NavController) {
                 if (password == confirmPassword) {
                     scope.launch {
                         val novoUsuario = Usuario(
-                            id = null,  // Gere um ID único
+                            id = null,
                             nome = username,
                             email = email,
                             senha = password
@@ -141,7 +141,6 @@ fun SignUpScreen(navController: NavController) {
                             usuarioDAO.adicionarUsuario(novoUsuario)
                             navController.navigate("login_screen")
                         } catch (e: Exception) {
-                            // Trate a exceção conforme necessário
                             errorMessage = "Erro ao criar a conta: ${e.message}"
                         }
                     }
