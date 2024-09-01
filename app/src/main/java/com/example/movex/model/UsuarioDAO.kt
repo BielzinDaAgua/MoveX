@@ -11,6 +11,8 @@ class UsuarioDAO {
     private val usuariosCollection = db.collection("usuarios")
 
     suspend fun adicionarUsuario(usuario: Usuario) {
+        validarUsuario(usuario)
+
         val querySnapshot = usuariosCollection
             .whereEqualTo("email", usuario.email)
             .get()
@@ -28,7 +30,7 @@ class UsuarioDAO {
     suspend fun removerUsuario(id: Long) {
         usuariosCollection.document(id.toString()).delete().await()
     }
-    
+
     suspend fun autenticarUsuario(email: String, senha: String): Usuario? {
         val querySnapshot: QuerySnapshot = usuariosCollection
             .whereEqualTo("email", email)
@@ -49,6 +51,7 @@ class UsuarioDAO {
     }
 
     suspend fun atualizarUsuario(usuario: Usuario) {
+        validarUsuario(usuario)
         usuario.id?.let {
             usuariosCollection.document(it.toString()).set(usuario).await()
         }
@@ -78,4 +81,23 @@ class UsuarioDAO {
         }
     }
 
+    // Função de validação
+    private fun validarUsuario(usuario: Usuario) {
+        if (usuario.nome.isNullOrBlank()) {
+            throw IllegalArgumentException("O nome é obrigatório.")
+        }
+
+        if (usuario.email.isNullOrBlank() || !usuario.email.matches("^[A-Za-z0-9+_.-]+@(.+)$".toRegex())) {
+            throw IllegalArgumentException("O e-mail é inválido.")
+        }
+
+        if (usuario.senha.isNullOrBlank()) {
+            throw IllegalArgumentException("A senha é obrigatória.")
+        }
+
+        if (usuario.senha.length < 6) {
+            throw IllegalArgumentException("A senha deve ter no mínimo 6 caracteres.")
+        }
+    }
 }
+

@@ -21,6 +21,8 @@ fun EditUserScreen(navController: NavController, userId: Int) {
     var usuario by remember { mutableStateOf<Usuario?>(null) }
     val usuarioDAO = UsuarioDAO()
     val scope = rememberCoroutineScope()
+    var errorMessage by remember { mutableStateOf("") }
+
 
     var nome by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
@@ -79,14 +81,34 @@ fun EditUserScreen(navController: NavController, userId: Int) {
 
         Spacer(modifier = Modifier.height(16.dp))
 
+        if (errorMessage.isNotEmpty()) {
+            Text(
+                text = errorMessage,
+                color = Color.Red,
+                style = MaterialTheme.typography.bodyLarge,
+                modifier = Modifier.fillMaxWidth(),
+                textAlign = androidx.compose.ui.text.style.TextAlign.Center
+            )
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
         Button(
             onClick = {
-                scope.launch {
-                    usuario?.let {
-                        usuarioDAO.atualizarUsuario(
-                            it.copy(nome = nome, email = email, senha = senha)
-                        )
-                        navController.navigate("main_screen/$userId")
+                if (nome.isBlank() || email.isBlank() || senha.isBlank()) {
+                    errorMessage = "Todos os campos são obrigatórios."
+                } else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                    errorMessage = "Formato de e-mail inválido."
+                } else {
+                    scope.launch {
+                        try {
+                            usuario?.let {
+                                usuarioDAO.atualizarUsuario(it.copy(nome = nome, email = email, senha = senha))
+                                navController.navigate("main_screen/$userId")
+                            }
+                        } catch (e: Exception) {
+                            errorMessage = "Erro ao atualizar usuário: ${e.message}"
+                        }
                     }
                 }
             },
