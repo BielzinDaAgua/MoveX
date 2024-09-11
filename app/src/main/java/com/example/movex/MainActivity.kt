@@ -16,6 +16,7 @@ import com.example.movex.telas.EditUserScreen
 import com.example.movex.telas.HomeScreen
 import com.example.movex.telas.LoginScreen
 import com.example.movex.telas.MainScreen
+import com.example.movex.telas.PersonalizeScreen
 import com.example.movex.telas.SignUpScreen
 import com.example.movex.telas.UserDetailsScreen
 import com.example.movex.ui.theme.MoveXTheme
@@ -63,6 +64,11 @@ fun AppNavigation() {
         ) { backStackEntry ->
             val userId = backStackEntry.arguments?.getInt("userId") ?: -1
             EditUserScreen(navController = navController, userId = userId)
+        }
+        composable("personalize_screen/{userId}", arguments = listOf(navArgument("userId"){ defaultValue = -1 })
+        ){ backStackEntry ->
+            val userId = backStackEntry.arguments?.getInt("userId") ?: -1
+            PersonalizeScreen(navController = navController, userId = userId)
         }
     }
 }

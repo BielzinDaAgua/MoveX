@@ -109,10 +109,10 @@ fun BottomAppBar(navController: NavController,  userId: Int) {
         )
         BottomNavigationItem(
             icon = Icons.Default.Add,
-            label = "Add",
+            label = "person",
             isSelected = false, // Defina como true se estiver na tela de Adicionar
             onClick = {
-                navController.navigate("add_screen")
+                navController.navigate("personalize_screen/$userId")
             }
         )
         BottomNavigationItem(
