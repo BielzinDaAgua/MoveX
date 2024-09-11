@@ -22,6 +22,12 @@ import com.example.movex.R
 
 @Composable
 fun PersonalizeScreen(navController: NavController, userId: Int) {
+    Scaffold(
+        bottomBar = { BottomNavigationBar(navController, userId)}
+    ){ paddingValues ->  
+        Box(modifier = Modifier.fillMaxWidth()
+                                .padding(paddingValues))
+    }
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
             modifier = Modifier
@@ -59,8 +65,6 @@ fun PersonalizeScreen(navController: NavController, userId: Int) {
                 imageRes = R.drawable.strength
             )
         }
-
-        BottomNavigationBar(navController, userId)
     }
 }
 
