@@ -31,7 +31,7 @@ fun UserDetailsScreen(navController: NavController, userId: Int) {
     } else {
         Scaffold(
             bottomBar = {
-                BottomAppBar(navController = navController, userId = userId)
+                BottomNavigationBar(navController = navController, userId = userId)
             }
         ) { paddingValues ->
             Column(

@@ -23,8 +23,8 @@ import com.example.movex.R
 @Composable
 fun PersonalizeScreen(navController: NavController, userId: Int) {
     Scaffold(
-        bottomBar = { BottomNavigationBar(navController, userId)}
-    ){ paddingValues ->  
+        bottomBar = { BottomNavigationBar(navController = navController, userId = userId)}
+    ){ paddingValues ->
         Box(modifier = Modifier.fillMaxWidth()
                                 .padding(paddingValues))
     }
@@ -56,6 +56,10 @@ fun PersonalizeScreen(navController: NavController, userId: Int) {
             )
 
             // Exemplo de como adicionar opções de treino
+            WorkoutOption(
+                workoutName = "Treino Força",
+                imageRes = R.drawable.strength
+            )
             WorkoutOption(
                 workoutName = "Treino Força",
                 imageRes = R.drawable.strength
@@ -108,7 +112,7 @@ fun WorkoutOption(workoutName: String, imageRes: Int) {
 }
 
 @Composable
-fun BottomNavigationBar(navController: NavController, userId: Int) {
+fun NavController.BottomNavigationBar(userId: Int) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -129,27 +133,31 @@ fun BottomNavigationBar(navController: NavController, userId: Int) {
             BottomNavigationItem(
                 icon = Icons.Default.Home,
                 label = "Home",
-                isSelected = true, // Defina como true se estiver na tela Home
+                isSelected = false,
                 onClick = {
-                    navController.navigate("main_screen/$userId")
+                    navigate("main_screen/$userId")
                 }
             )
             BottomNavigationItem(
                 icon = Icons.Default.Add,
                 label = "person",
-                isSelected = false, // Defina como true se estiver na tela de Adicionar
+                isSelected = true,
                 onClick = {
-                    navController.navigate("personalize_screen/$userId")
+                    navigate("personalize_screen/$userId")
                 }
             )
             BottomNavigationItem(
                 icon = Icons.Default.Person,
                 label = "Profile",
-                isSelected = false, // Defina como true se estiver na tela de Perfil
+                isSelected = false,
                 onClick = {
-                    navController.navigate("user_details_screen/$userId")
+                    navigate("user_details_screen/$userId")
                 }
             )
         }
     }
 }
+
+
+
+
