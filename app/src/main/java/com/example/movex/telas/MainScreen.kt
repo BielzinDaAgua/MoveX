@@ -1,8 +1,10 @@
 package com.example.movex.telas
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -10,10 +12,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
@@ -24,8 +29,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.movex.R
 
 
 @Composable
@@ -37,7 +46,7 @@ fun MainScreen(navController: NavController, userId: Int) {
 
     Scaffold(
         bottomBar = {
-            BottomAppBar(navController = navController, userId = userId)
+            BottomNavigationBar(navController = navController, userId = userId)
         }
     ) { paddingValues ->
         Column(
@@ -64,65 +73,78 @@ fun MainScreen(navController: NavController, userId: Int) {
             DayTrainingCard(
                 day = "Segunda-feira",
                 exercise = "Costas e Bíceps",
-                progress = progressMonday
+                progress = progressMonday,
+                imageRes = R.drawable.strength
             )
 
             DayTrainingCard(
                 day = "Terça-feira",
                 exercise = "Peito e Tríceps",
-                progress = progressTuesday
+                progress = progressTuesday,
+                imageRes = R.drawable.strength
             )
 
             DayTrainingCard(
                 day = "Quarta-feira",
                 exercise = "Peito e Tríceps",
-                progress = progressWednesday
+                progress = progressWednesday,
+                imageRes = R.drawable.strength
             )
 
             DayTrainingCard(
                 day = "Quinta-feira",
                 exercise = "Ombros e Trapézio",
-                progress = progressThursday
+                progress = progressThursday,
+                imageRes = R.drawable.strength
             )
         }
     }
 }
 
 @Composable
-fun BottomAppBar(navController: NavController,  userId: Int) {
-    Row(
+fun BottomNavigationBar(navController: NavController, userId: Int) {
+    Box(
         modifier = Modifier
-            .fillMaxWidth(0.8f) // Ocupa 70% da largura da tela
+            .fillMaxWidth()
             .height(70.dp)
-            .background(Color.Black, shape = MaterialTheme.shapes.medium)
             .padding(8.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceAround
-    ) {
-        BottomNavigationItem(
-            icon = Icons.Default.Home,
-            label = "Home",
-            isSelected = true, // Defina como true se estiver na tela Home
-            onClick = {
-                navController.navigate("main_screen/$userId")
-            }
-        )
-        BottomNavigationItem(
-            icon = Icons.Default.Add,
-            label = "person",
-            isSelected = false, // Defina como true se estiver na tela de Adicionar
-            onClick = {
-                navController.navigate("personalize_screen/$userId")
-            }
-        )
-        BottomNavigationItem(
-            icon = Icons.Default.Person,
-            label = "Profile",
-            isSelected = false, // Defina como true se estiver na tela de Perfil
-            onClick = {
-                navController.navigate("user_details_screen/$userId")
-            }
-        )
+
+        ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth(0.8f) // Ocupa 80% da largura da tela
+                .height(70.dp)
+                .background(Color.Black, shape = MaterialTheme.shapes.medium)
+                .padding(8.dp)
+                .align(Alignment.BottomCenter),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceAround
+        ) {
+            BottomNavigationItem(
+                icon = Icons.Default.Home,
+                label = "Home",
+                isSelected = true,
+                onClick = {
+                    navController.navigate("main_screen/$userId")
+                }
+            )
+            BottomNavigationItem(
+                icon = Icons.Default.Add,
+                label = "person",
+                isSelected = false,
+                onClick = {
+                    navController.navigate("personalize_screen/$userId")
+                }
+            )
+            BottomNavigationItem(
+                icon = Icons.Default.Person,
+                label = "Profile",
+                isSelected = false,
+                onClick = {
+                    navController.navigate("user_details_screen/$userId")
+                }
+            )
+        }
     }
 }
 
@@ -150,33 +172,69 @@ fun BottomNavigationItem(
 
 
 @Composable
-fun DayTrainingCard(day: String, exercise: String, progress: Float) {
-    Column(modifier = Modifier.padding(vertical = 8.dp)) {
-        Text(text = day, style = MaterialTheme.typography.bodyMedium, color = Color.Black)
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 4.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            Text(text = exercise, style = MaterialTheme.typography.bodyLarge, color = Color.Black)
+fun DayTrainingCard(day: String, exercise: String, progress: Float, imageRes: Int) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 8.dp),
+        elevation = androidx.compose.material3.CardDefaults.cardElevation(8.dp)
+    ) {
+        Column(modifier = Modifier.padding(16.dp)) {
             Text(
-                text = "Iniciante",
-                style = MaterialTheme.typography.labelSmall,
-                color = Color.Black,
+                text = day,
+                style = MaterialTheme.typography.bodyMedium,
+                color = Color.Black
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Row(
                 modifier = Modifier
-                    .background(Color.Gray)
-                    .padding(horizontal = 8.dp, vertical = 2.dp)
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Image(
+                    painter = painterResource(id = imageRes),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(64.dp)
+                        .padding(end = 16.dp),
+                    contentScale = ContentScale.Crop
+                )
+
+                Column(
+                    modifier = Modifier.weight(1f),
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    Text(
+                        text = exercise,
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = Color.Black
+                    )
+                }
+
+                Text(
+                    text = "Iniciante",
+                    style = MaterialTheme.typography.labelSmall,
+                    color = Color.White,
+                    modifier = Modifier
+                        .background(Color(0xFF424242), shape = MaterialTheme.shapes.small)
+                        .padding(horizontal = 8.dp, vertical = 4.dp)
+                )
+            }
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            LinearProgressIndicator(
+                progress = progress,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(8.dp)
+                    .background(Color.LightGray),
+                color = Color(0xFFFFA500) // Cor laranja
             )
         }
-        LinearProgressIndicator(
-            progress = progress,
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(8.dp)
-                .background(Color.LightGray),
-            color = Color(0xFFFFA500) // Cor laranja
-        )
     }
 }
