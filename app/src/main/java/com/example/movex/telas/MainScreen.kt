@@ -177,7 +177,10 @@ fun DayTrainingCard(day: String, exercise: String, progress: Float, imageRes: In
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 8.dp),
-        elevation = androidx.compose.material3.CardDefaults.cardElevation(8.dp)
+        elevation = androidx.compose.material3.CardDefaults.cardElevation(8.dp),
+        colors = androidx.compose.material3.CardDefaults.cardColors(
+            containerColor = Color(0xFFF5F5F5)
+        )
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
@@ -220,7 +223,7 @@ fun DayTrainingCard(day: String, exercise: String, progress: Float, imageRes: In
                     style = MaterialTheme.typography.labelSmall,
                     color = Color.White,
                     modifier = Modifier
-                        .background(Color(0xFF424242), shape = MaterialTheme.shapes.small)
+                        .background(Color(0xFFFFA500), shape = MaterialTheme.shapes.small)
                         .padding(horizontal = 8.dp, vertical = 4.dp)
                 )
             }

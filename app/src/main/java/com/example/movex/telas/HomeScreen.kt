@@ -45,7 +45,7 @@ fun HomeScreen(navController: NavController) {
         Spacer(modifier = Modifier.height(16.dp))
 
         Text(
-            text = "Acesse o login e comece seu treino!",
+            text = "Acesse o app e comece seu treino!",
             style = MaterialTheme.typography.bodyLarge,
             color = Color.Gray,
             textAlign = TextAlign.Center,
