@@ -14,6 +14,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
+import com.example.movex.services.getRouteFromGoogleMaps
 import com.google.android.gms.maps.MapView
 
 @Composable
@@ -39,12 +40,11 @@ fun RunningScreen(destination: LatLng) {
                 if (location != null) {
                     currentLocation = LatLng(location.latitude, location.longitude)
                     coroutineScope.launch {
-                        route = getRouteFromGoogleMaps(currentLocation!!, destination) // Defina o destino
+                        route = getRouteFromGoogleMaps(currentLocation!!, destination)
                     }
                 }
             }
         } catch (e: SecurityException) {
-            // Gerenciar exceção de permissão de localização
             e.printStackTrace()
         }
     }
@@ -68,12 +68,6 @@ fun GoogleMapView(currentLocation: LatLng?, route: List<LatLng>) {
             }
         }
     }
-}
-
-suspend fun getRouteFromGoogleMaps(start: LatLng, destination: LatLng): List<LatLng> {
-    // Função que faz a requisição para a Google Directions API e retorna uma lista de LatLng representando a rota
-    // Exemplo de uso de Retrofit ou HttpUrlConnection para fazer a chamada HTTP à API
-    return listOf() // Substituir pelo cálculo da rota
 }
 
 @Composable

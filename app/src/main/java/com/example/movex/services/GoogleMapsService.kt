@@ -1,5 +1,6 @@
 package com.example.movex.services
 
+import com.example.movex.BuildConfig
 import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -84,7 +85,7 @@ suspend fun getRouteFromGoogleMaps(start: LatLng, destination: LatLng): List<Lat
     val dest = "${destination.latitude},${destination.longitude}"
 
     // Chave da API
-    val apiKey = "YOUR_GOOGLE_MAPS_API_KEY"
+    val apiKey = BuildConfig.GOOGLE_MAPS_API_KEY
 
     return withContext(Dispatchers.IO) {
         try {
