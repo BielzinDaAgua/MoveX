@@ -8,23 +8,25 @@ import androidx.activity.ComponentActivity
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
-import androidx.lifecycle.LifecycleOwner
 import androidx.navigation.NavController
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import kotlinx.coroutines.launch
+import com.example.movex.utils.calculateCalories
+import com.google.android.gms.maps.model.PolylineOptions
 
 @Composable
 fun RunningScreen(navController: NavController, userId: Int) {
@@ -32,7 +34,10 @@ fun RunningScreen(navController: NavController, userId: Int) {
     val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
 
     var currentLocation by remember { mutableStateOf<LatLng?>(null) }
-    var permissionDenied by remember { mutableStateOf(false) }
+    var locationUpdates by remember { mutableStateOf<List<LatLng>>(emptyList()) }
+    var isRunning by remember { mutableStateOf(false) }
+    var startTime by remember { mutableStateOf(0L) }
+    var elapsedTime by remember { mutableStateOf(0L) }
 
     LaunchedEffect(Unit) {
         val activity = context as? ComponentActivity
@@ -46,41 +51,132 @@ fun RunningScreen(navController: NavController, userId: Int) {
         }
     }
 
+    Box(modifier = Modifier.fillMaxSize()) {
+        GoogleMapView(
+            currentLocation = currentLocation,
+            locationUpdates = locationUpdates
+        )
 
-    GoogleMapView(
-        currentLocation = currentLocation
-    )
-}
+        Button(onClick = { navController.navigate("main_screen/$userId") }) {
+            Text("Voltar")
+        }
 
-@Composable
-fun GoogleMapView(currentLocation: LatLng?){
-        val context = LocalContext.current
-        val mapView = rememberMapViewWithLifecycle()
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
+                .align(Alignment.BottomCenter),
+        ) {
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .size(200.dp)
+                    .padding(vertical = 8.dp),
+                elevation = CardDefaults.cardElevation(8.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = Color(0xFFF5F5F5)
+                )
+            ){
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .align(Alignment.CenterHorizontally),
+                ) {
 
-        AndroidView({ mapView }) { mapView ->
-            mapView.getMapAsync { googleMap ->
-                if (currentLocation != null) {
-                    googleMap.addMarker(MarkerOptions().position(currentLocation).title("Você está aqui"))
-                    googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 15f))
-                    if (ContextCompat.checkSelfPermission(
-                            context,
-                            Manifest.permission.ACCESS_FINE_LOCATION
-                        ) == PackageManager.PERMISSION_GRANTED
-                    ) {
-                        googleMap.isMyLocationEnabled = true
+                    Text(
+                        text = "$elapsedTime",
+                        style = MaterialTheme.typography.titleLarge,
+                        color = Color.Black
+                    )
+
+                    Spacer(modifier = Modifier.height(50.dp))
+
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(8.dp),
+                        horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.CenterVertically
+                    ){
+                        if(!isRunning) {
+                            Button(onClick = {
+                                isRunning = true
+                                startTime = System.currentTimeMillis()
+                                locationUpdates = emptyList()
+                            }) {
+                                Text("Iniciar Corrida")
+                            }
+                        } else {
+                            Button(onClick = {
+                                isRunning = false
+                                elapsedTime = System.currentTimeMillis() - startTime
+                                val calories = calculateCalories(locationUpdates, elapsedTime)
+                                Toast.makeText(
+                                    context,
+                                    "Tempo: ${elapsedTime / 1000} segs, Calorias: $calories",
+                                    Toast.LENGTH_LONG
+                                ).show()
+                            }) {
+                                Text("Parar Corrida")
+                            }
+                        }
                     }
                 }
             }
         }
     }
 
+    if (isRunning) {
+        LaunchedEffect(Unit) {
+            val activity = context as? ComponentActivity
+            if (activity != null) {
+                checkLocationPermissions(activity, fusedLocationClient) { location ->
+                    val newLocation = LatLng(location.latitude, location.longitude)
+                    currentLocation = newLocation
+                    locationUpdates = locationUpdates + newLocation
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun GoogleMapView(currentLocation: LatLng?, locationUpdates: List<LatLng>) {
+    val mapView = rememberMapViewWithLifecycle()
+
+    AndroidView({ mapView }) { mapView ->
+        mapView.getMapAsync { googleMap ->
+            if (currentLocation != null) {
+                googleMap.addMarker(
+                    MarkerOptions()
+                        .position(currentLocation)
+                        .title("Você está aqui")
+                )
+                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 15f))
+
+                if (locationUpdates.isNotEmpty()) {
+                    val polylineOptions = PolylineOptions().addAll(locationUpdates)
+                    googleMap.addPolyline(polylineOptions)
+                }
+            }
+        }
+    }
+}
+
 private fun checkLocationPermissions(
     activity: ComponentActivity,
     fusedLocationClient: com.google.android.gms.location.FusedLocationProviderClient,
     onLocationFound: (Location) -> Unit
 ) {
-    if (ContextCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED ||
-        ContextCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+    if (ContextCompat.checkSelfPermission(
+            activity,
+            Manifest.permission.ACCESS_FINE_LOCATION
+        ) == PackageManager.PERMISSION_GRANTED ||
+        ContextCompat.checkSelfPermission(
+            activity,
+            Manifest.permission.ACCESS_COARSE_LOCATION
+        ) == PackageManager.PERMISSION_GRANTED
+    ) {
         fusedLocationClient.lastLocation.addOnSuccessListener { location ->
             if (location != null) {
                 onLocationFound(location)
@@ -89,7 +185,10 @@ private fun checkLocationPermissions(
     } else {
         ActivityCompat.requestPermissions(
             activity,
-            arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION),
+            arrayOf(
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ),
             LOCATION_PERMISSION_REQUEST_CODE
         )
     }
