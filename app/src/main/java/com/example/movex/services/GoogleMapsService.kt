@@ -21,7 +21,7 @@ data class OverviewPolyline(
     val points: String
 )
 
-// Interface para a API do Google Directions
+
 interface DirectionsApiService {
     @GET("maps/api/directions/json")
     suspend fun getDirections(
@@ -31,7 +31,7 @@ interface DirectionsApiService {
     ): DirectionsResponse
 }
 
-// Retrofit Builder
+
 fun createDirectionsApi(): DirectionsApiService {
     return Retrofit.Builder()
         .baseUrl("https://maps.googleapis.com/")
@@ -40,7 +40,7 @@ fun createDirectionsApi(): DirectionsApiService {
         .create(DirectionsApiService::class.java)
 }
 
-// Função para decodificar polyline
+
 fun decodePolyline(encoded: String): List<LatLng> {
     val poly = ArrayList<LatLng>()
     var index = 0
@@ -80,26 +80,23 @@ fun decodePolyline(encoded: String): List<LatLng> {
 suspend fun getRouteFromGoogleMaps(start: LatLng, destination: LatLng): List<LatLng> {
     val directionsApi = createDirectionsApi()
 
-    // Converte os pontos para o formato string
     val origin = "${start.latitude},${start.longitude}"
     val dest = "${destination.latitude},${destination.longitude}"
 
-    // Chave da API
-    val apiKey = BuildConfig.GOOGLE_MAPS_API_KEY
+    val apiKey = BuildConfig.GOOGLE_API_KEY
 
     return withContext(Dispatchers.IO) {
         try {
             val response = directionsApi.getDirections(origin, dest, apiKey)
 
             if (response.routes.isNotEmpty()) {
-                // Decodifica a polyline da resposta e retorna a lista de LatLng
                 decodePolyline(response.routes[0].overviewPolyline.points)
             } else {
-                emptyList() // Retorna lista vazia se não houver rotas
+                emptyList()
             }
         } catch (e: Exception) {
             e.printStackTrace()
-            emptyList<LatLng>() // Em caso de erro, retorna lista vazia
+            emptyList<LatLng>()
         }
     }
 }

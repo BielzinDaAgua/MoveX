@@ -35,8 +35,8 @@ android {
 
         buildConfigField(
             "String",
-            "GOOGLE_MAPS_API_KEY",
-            "\"${getLocalProperty("GOOGLE_MAPS_API_KEY", project)}\""
+            "GOOGLE_API_KEY",
+            "\"${getLocalProperty("GOOGLE_API_KEY", project)}\""
         )
     }
 
@@ -71,11 +71,12 @@ android {
 }
 
 dependencies {
-    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
-    implementation ("com.google.android.gms:play-services-maps:18.0.2")
-    implementation ("com.google.android.gms:play-services-location:21.0.1")
-    implementation ("com.google.maps.android:android-maps-utils:2.3.0")
+    implementation(libs.places.v350)
+    implementation (libs.retrofit)
+    implementation (libs.converter.gson)
+    implementation (libs.play.services.maps)
+    implementation (libs.play.services.location)
+    implementation (libs.android.maps.utils)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -89,6 +90,7 @@ dependencies {
     implementation(libs.androidx.material3.android)
     implementation(libs.firebase.firestore)
     implementation(libs.firebase.firestore.ktx)
+    implementation(libs.transportation.consumer)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -96,6 +98,6 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-    implementation(platform("com.google.firebase:firebase-bom:33.1.2"))
+    implementation(platform(libs.firebase.bom.v3312))
 
 }

@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -144,6 +145,14 @@ fun BottomNavigationBar(navController: NavController, userId: Int) {
                     navController.navigate("user_details_screen/$userId")
                 }
             )
+            BottomNavigationItem(
+                icon = Icons.Default.LocationOn,
+                label = "Profile",
+                isSelected = false,
+                onClick = {
+                    navController.navigate("running_screen/$userId")
+                }
+            )
         }
     }
 }
@@ -236,7 +245,7 @@ fun DayTrainingCard(day: String, exercise: String, progress: Float, imageRes: In
                     .fillMaxWidth()
                     .height(8.dp)
                     .background(Color.LightGray),
-                color = Color(0xFFFFA500) // Cor laranja
+                color = Color(0xFFFFA500)
             )
         }
     }
