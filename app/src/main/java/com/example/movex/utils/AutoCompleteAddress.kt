@@ -112,12 +112,11 @@ private fun fetchPlaceDetails(placeId: String, context: Context, callback: (LatL
             place.latLng?.let {
                 callback(it)
             } ?: run {
-                // Handle the case where latLng is null
-                callback(LatLng(0.0, 0.0)) // Retorne uma localização padrão ou um erro
+                callback(LatLng(0.0, 0.0))
             }
         }
         .addOnFailureListener { exception ->
             exception.printStackTrace()
-            callback(LatLng(0.0, 0.0)) // Retorne uma localização padrão ou um erro
+            callback(LatLng(0.0, 0.0))
         }
 }
