@@ -1,14 +1,18 @@
 package com.example.movex.telas
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import coil.compose.rememberImagePainter
 import com.example.movex.model.Usuario
 import com.example.movex.model.UsuarioDAO
 import kotlinx.coroutines.launch
@@ -43,6 +47,16 @@ fun UserDetailsScreen(navController: NavController, userId: Int) {
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
+                Image(
+                    painter = rememberImagePainter(usuario?.fotoUrl),
+                    contentDescription = "Foto do perfil",
+                    modifier = Modifier
+                        .size(100.dp)
+                        .clip(CircleShape)
+                        .background(Color.Gray),
+                    alignment = Alignment.Center
+                )
+
                 Text(
                     text = "Detalhes da Conta",
                     style = MaterialTheme.typography.headlineSmall,
