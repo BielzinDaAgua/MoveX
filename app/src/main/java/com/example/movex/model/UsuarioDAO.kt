@@ -1,13 +1,17 @@
 package com.example.movex.model
 
+import android.net.Uri
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.ktx.toObject
+import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.tasks.await
 
 class UsuarioDAO {
 
     private val db = FirebaseFirestore.getInstance()
+    private val storage = FirebaseStorage.getInstance()
+
     private val usuariosCollection = db.collection("usuarios")
 
     suspend fun adicionarUsuario(usuario: Usuario) {
@@ -22,10 +26,19 @@ class UsuarioDAO {
             throw IllegalArgumentException("O email já está em uso.")
         }
 
+        // Definir imagem de perfil padrão se não estiver definida
+        val fotoUrlPadrao = "gs://movex-51484.appspot.com/perfil/default_profile_picture.jpg"
+        val usuarioComFoto = if (usuario.fotoUrl.isNullOrEmpty()) {
+            usuario.copy(fotoUrl = fotoUrlPadrao)
+        } else {
+            usuario
+        }
+
         val newId = gerarNovoId()
-        val usuarioComId = usuario.copy(id = newId)
+        val usuarioComId = usuarioComFoto.copy(id = newId)
         usuariosCollection.document(newId.toString()).set(usuarioComId).await()
     }
+
 
     suspend fun removerUsuario(id: Long) {
         usuariosCollection.document(id.toString()).delete().await()
@@ -51,10 +64,19 @@ class UsuarioDAO {
     }
 
     suspend fun atualizarUsuario(usuario: Usuario) {
-        validarUsuario(usuario)
+        validarUsuario(usuario)  // Verificar se o usuário está válido
         usuario.id?.let {
+            // Atualizando o documento no Firestore com o objeto 'usuario'
             usuariosCollection.document(it.toString()).set(usuario).await()
         }
+    }
+
+
+    // Função para fazer o upload da foto de perfil no Firebase Storage
+    private suspend fun uploadFotoPerfil(imagemUri: Uri, userId: Int): String {
+        val storageRef = storage.reference.child("perfil/$userId.jpg")
+        val uploadTask = storageRef.putFile(imagemUri).await()
+        return storageRef.downloadUrl.await().toString()  // Retorna a URL da imagem
     }
 
     private suspend fun gerarNovoId(): Int {
