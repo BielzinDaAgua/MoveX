@@ -36,14 +36,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.movex.R
+import androidx.compose.material.icons.filled.Group
+import androidx.compose.material3.Button
+import androidx.lifecycle.viewmodel.compose.viewModel
 
 
 @Composable
 fun MainScreen(navController: NavController, userId: Int) {
-    val progressMonday = 1.0f
-    val progressTuesday = 0.75f
-    val progressWednesday = 0.45f
-    val progressThursday = 0.1f
+    val viewModel: TrainingViewModel = viewModel()
+    val progressMonday = viewModel.getProgress("Segunda-feira")
 
     Scaffold(
         bottomBar = {
@@ -74,30 +75,29 @@ fun MainScreen(navController: NavController, userId: Int) {
             DayTrainingCard(
                 day = "Segunda-feira",
                 exercise = "Costas e Bíceps",
-                progress = progressMonday,
-                imageRes = R.drawable.strength
+                progress = progressMonday.toInt(),
+                imageRes = R.drawable.strength,
+                onIncrement = { viewModel.incrementProgress("Segunda-feira") },
+                onNavigateToDetails = { navController.navigate("training_detail_screen/Segunda-feira") }
             )
 
-            DayTrainingCard(
-                day = "Terça-feira",
-                exercise = "Peito e Tríceps",
-                progress = progressTuesday,
-                imageRes = R.drawable.strength
-            )
-
-            DayTrainingCard(
-                day = "Quarta-feira",
-                exercise = "Peito e Tríceps",
-                progress = progressWednesday,
-                imageRes = R.drawable.strength
-            )
-
-            DayTrainingCard(
-                day = "Quinta-feira",
-                exercise = "Ombros e Trapézio",
-                progress = progressThursday,
-                imageRes = R.drawable.strength
-            )
+//            DayTrainingCard(
+//                day = "Terça-feira",
+//                exercise = "Peito e Tríceps",
+//                progress = progressMonday.toInt(),
+//                imageRes = R.drawable.strength,
+//                onIncrement = { viewModel.incrementProgress("Terça-feira") },
+//                onNavigateToDetails = { navController.navigate("training_detail_screen/Segunda-feira") }
+//            )
+//
+//            DayTrainingCard(
+//                day = "Quarta-feira",
+//                exercise = "Pernas e Ombro",
+//                progress = progressMonday.toInt(),
+//                imageRes = R.drawable.strength,
+//                onIncrement = { viewModel.incrementProgress("Quarta-feira") },
+//                onNavigateToDetails = { navController.navigate("training_detail_screen/Segunda-feira") }
+//            )
         }
     }
 }
@@ -153,6 +153,15 @@ fun BottomNavigationBar(navController: NavController, userId: Int) {
                     navController.navigate("running_screen/$userId")
                 }
             )
+
+            BottomNavigationItem(
+                icon = Icons.Default.Group,
+                label = "Profile",
+                isSelected = false,
+                onClick = {
+                    navController.navigate("group_screen/$userId")
+                }
+            )
         }
     }
 }
@@ -181,15 +190,20 @@ fun BottomNavigationItem(
 
 
 @Composable
-fun DayTrainingCard(day: String, exercise: String, progress: Float, imageRes: Int) {
+fun DayTrainingCard(
+    day: String,
+    exercise: String,
+    progress: Int,
+    imageRes: Int,
+    onIncrement: () -> Unit,
+    onNavigateToDetails: () -> Unit
+) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 8.dp),
-        elevation = androidx.compose.material3.CardDefaults.cardElevation(8.dp),
-        colors = androidx.compose.material3.CardDefaults.cardColors(
-            containerColor = Color(0xFFF5F5F5)
-        )
+        elevation = CardDefaults.cardElevation(8.dp),
+        colors = CardDefaults.cardColors(containerColor = Color(0xFFF5F5F5))
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
@@ -210,16 +224,11 @@ fun DayTrainingCard(day: String, exercise: String, progress: Float, imageRes: In
                 Image(
                     painter = painterResource(id = imageRes),
                     contentDescription = null,
-                    modifier = Modifier
-                        .size(64.dp)
-                        .padding(end = 16.dp),
+                    modifier = Modifier.size(64.dp),
                     contentScale = ContentScale.Crop
                 )
 
-                Column(
-                    modifier = Modifier.weight(1f),
-                    verticalArrangement = Arrangement.Center
-                ) {
+                Column(modifier = Modifier.weight(1f)) {
                     Text(
                         text = exercise,
                         style = MaterialTheme.typography.bodyLarge,
@@ -234,18 +243,24 @@ fun DayTrainingCard(day: String, exercise: String, progress: Float, imageRes: In
                     modifier = Modifier
                         .background(Color(0xFFFFA500), shape = MaterialTheme.shapes.small)
                         .padding(horizontal = 8.dp, vertical = 4.dp)
+                        .clickable {
+                            onIncrement() // Chama o incremento ao clicar
+                            onNavigateToDetails()
+                        } // Navegação ao clicar
                 )
             }
 
-            Spacer(modifier = Modifier.height(8.dp))
-
+            // Barra de Progresso
             LinearProgressIndicator(
-                progress = progress,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(8.dp)
-                    .background(Color.LightGray),
-                color = Color(0xFFFFA500)
+                progress = progress / 100f, // Converte o progresso para fração
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            // Texto de Progresso
+            Text(
+                text = "$progress% concluído",
+                style = MaterialTheme.typography.bodyMedium,
+                modifier = Modifier.padding(vertical = 8.dp)
             )
         }
     }
