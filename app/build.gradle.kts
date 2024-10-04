@@ -5,6 +5,8 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
     id("com.google.gms.google-services")
+    id("com.google.devtools.ksp")
+    kotlin("kapt")
 }
 
 fun getLocalProperty(key: String, project: Project): String {
@@ -71,6 +73,10 @@ android {
 }
 
 dependencies {
+    val room_version = "2.6.1"
+    implementation("androidx.room:room-runtime:$room_version")
+    implementation("androidx.room:room-ktx:$room_version")
+    ksp("androidx.room:room-compiler:$room_version")
     implementation(libs.places.v350)
     implementation (libs.retrofit)
     implementation (libs.converter.gson)

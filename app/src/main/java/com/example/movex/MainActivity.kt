@@ -1,7 +1,6 @@
 package com.example.movex
 
 import android.os.Bundle
-import com.example.movex.BuildConfig
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.material3.MaterialTheme
@@ -19,19 +18,16 @@ import com.example.movex.telas.HomeScreen
 import com.example.movex.telas.LoginScreen
 import com.example.movex.telas.MainScreen
 import com.example.movex.telas.PersonalizeScreen
+import com.example.movex.telas.RunHistoryScreen
 import com.example.movex.telas.RunningScreen
 import com.example.movex.telas.SignUpScreen
 import com.example.movex.telas.TrainingDetailScreen
 import com.example.movex.telas.UserDetailsScreen
 import com.example.movex.ui.theme.MoveXTheme
-import com.google.android.libraries.places.api.Places
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (!Places.isInitialized()) {
-            Places.initialize(applicationContext, BuildConfig.GOOGLE_API_KEY)
-        }
         setContent {
             MoveXTheme {
                 Surface(
@@ -92,6 +88,10 @@ fun AppNavigation() {
         composable("running_screen/{userId}") { backStackEntry ->
             val userId = backStackEntry.arguments?.getString("userId")?.toIntOrNull() ?: 0
             RunningScreen(navController, userId)
+        }
+        composable("run_history/{userId}") { backStackEntry ->
+            val userId = backStackEntry.arguments?.getString("userId")?.toIntOrNull() ?: 0
+            RunHistoryScreen(navController, userId)
         }
     }
 }

@@ -25,18 +25,25 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.movex.data.RunDatabase
+import com.example.movex.model.RunSummary
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.PolylineOptions
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import java.util.Date
 
 @Composable
 fun RunningScreen(navController: NavController, userId: Int) {
     val context = LocalContext.current
     val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
+    val runDatabase = RunDatabase.getDatabase(context)
 
     var currentLocation by remember { mutableStateOf<LatLng?>(null) }
     var locationUpdates by remember { mutableStateOf<List<LatLng>>(emptyList()) }
@@ -45,6 +52,15 @@ fun RunningScreen(navController: NavController, userId: Int) {
     var elapsedTime by remember { mutableStateOf(0L) }
     var summary by remember { mutableStateOf("") }
     val testMode = false
+
+    fun saveRunSummary(summary: String) {
+        val currentDate = System.currentTimeMillis()
+        val runSummary = RunSummary(summary = summary, timestamp = currentDate)
+
+        CoroutineScope(Dispatchers.IO).launch {
+            runDatabase.runSummaryDao().insert(runSummary)
+        }
+    }
 
     LaunchedEffect(Unit) {
         if (testMode) {
@@ -82,11 +98,27 @@ fun RunningScreen(navController: NavController, userId: Int) {
             locationUpdates = locationUpdates
         )
 
-        Button(onClick = { navController.navigate("main_screen/$userId") },
-            modifier = Modifier.padding(16.dp), colors =  ButtonDefaults.buttonColors(
-                containerColor = Color(0xFFFFA500)
-            )) {
-            Text("Voltar")
+        Row(modifier = Modifier
+            .fillMaxWidth()
+            .padding(8.dp),
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            verticalAlignment = Alignment.CenterVertically){
+
+            Button(onClick = { navController.navigate("main_screen/$userId") },
+                modifier = Modifier.padding(16.dp), colors =  ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFFFFA500)
+                )) {
+                Text("Voltar")
+            }
+
+            Spacer(modifier = Modifier.height(32.dp))
+
+            Button(onClick = { navController.navigate("run_history/$userId") },
+                modifier = Modifier.padding(16.dp), colors =  ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFFFFA500)
+                )) {
+                Text("Histórico")
+            }
         }
 
         Column(
@@ -263,6 +295,7 @@ fun RunningScreen(navController: NavController, userId: Int) {
                                 val distance = calculateDistance(locationUpdates)
 
                                 summary = "Tempo: ${(elapsedTime / 1000)} segundos\nDistância: ${distance / 1000} km"
+                                saveRunSummary(summary)
                             },  modifier = Modifier.width(200.dp)
                                 .height(50.dp),
                                 colors = ButtonDefaults.buttonColors(
@@ -403,6 +436,8 @@ fun haversine(start: LatLng, end: LatLng): Double {
 
     return R * c
 }
+
+
 
 private const val LOCATION_PERMISSION_REQUEST_CODE = 1
 

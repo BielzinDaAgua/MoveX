@@ -36,7 +36,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.movex.R
-import androidx.compose.material.icons.filled.Group
+/*import androidx.compose.material.icons.filled.Group*/
+import androidx.compose.material.icons.filled.ThumbUp
 import androidx.compose.material3.Button
 import androidx.lifecycle.viewmodel.compose.viewModel
 
@@ -155,7 +156,7 @@ fun BottomNavigationBar(navController: NavController, userId: Int) {
             )
 
             BottomNavigationItem(
-                icon = Icons.Default.Group,
+                icon = Icons.Default.ThumbUp,
                 label = "Profile",
                 isSelected = false,
                 onClick = {
