@@ -64,25 +64,41 @@ fun UserDetailsScreen(navController: NavController, userId: Int) {
                     modifier = Modifier.padding(bottom = 16.dp)
                 )
 
-                Text(
-                    text = "Nome: ${usuario?.nome}",
-                    style = MaterialTheme.typography.bodyLarge,
-                    color = Color.Black,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(8.dp)
-                )
-
-                Text(
-                    text = "Email: ${usuario?.email}",
-                    style = MaterialTheme.typography.bodyLarge,
-                    color = Color.Black,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(8.dp)
-                )
-
                 Spacer(modifier = Modifier.height(32.dp))
+
+                Button(
+                    onClick = {
+                        navController.navigate("")
+                    },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color.Black,
+                        contentColor = Color.White
+                    ),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(50.dp)
+                ) {
+                    Text(text = "Editar o seu nome")
+                }
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                Button(
+                    onClick = {
+                        navController.navigate("")
+                    },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color.Black,
+                        contentColor = Color.White
+                    ),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(50.dp)
+                ) {
+                    Text(text = "Editar a sua email")
+                }
+
+                Spacer(modifier = Modifier.height(16.dp))
 
                 Button(
                     onClick = {
@@ -115,6 +131,8 @@ fun UserDetailsScreen(navController: NavController, userId: Int) {
                 ) {
                     Text(text = "Excluir Conta")
                 }
+
+                Spacer(modifier = Modifier.height(16.dp))
 
                 if (showDialog) {
                     AlertDialog(
