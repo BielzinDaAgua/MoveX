@@ -99,5 +99,6 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation(platform(libs.firebase.bom.v3312))
+    implementation("io.coil-kt:coil-compose:2.3.0")
 
 }
