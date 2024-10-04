@@ -25,6 +25,7 @@ import com.example.movex.R
 import com.example.movex.model.Usuario
 import com.example.movex.model.UsuarioDAO
 import kotlinx.coroutines.launch
+import uploadImageToStorage
 
 @Composable
 fun UserDetailsScreen(navController: NavController, userId: Int) {

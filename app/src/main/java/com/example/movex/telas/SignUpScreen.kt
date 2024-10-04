@@ -29,10 +29,10 @@ fun SignUpScreen(navController: NavController) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var confirmPassword by remember { mutableStateOf("") }
-    var passwordVisible by remember { mutableStateOf(false) } // Estado para controlar visibilidade da senha
-    var confirmPasswordVisible by remember { mutableStateOf(false) } // Estado para controlar visibilidade da confirmação de senha
+    var passwordVisible by remember { mutableStateOf(false) }
+    var confirmPasswordVisible by remember { mutableStateOf(false) }
     var errorMessage by remember { mutableStateOf("") }
-    var isLoading by remember { mutableStateOf(false) } // Estado para controlar o carregamento
+    var isLoading by remember { mutableStateOf(false) }
     val usuarioDAO = UsuarioDAO()
     val scope = rememberCoroutineScope()
 
@@ -55,6 +55,7 @@ fun SignUpScreen(navController: NavController) {
 
         Spacer(modifier = Modifier.height(50.dp))
 
+        // Campo de Usuário
         TextField(
             value = username,
             onValueChange = { username = it },
@@ -71,6 +72,7 @@ fun SignUpScreen(navController: NavController) {
 
         Spacer(modifier = Modifier.height(8.dp))
 
+        // Campo de E-mail
         TextField(
             value = email,
             onValueChange = { email = it },
@@ -87,6 +89,7 @@ fun SignUpScreen(navController: NavController) {
 
         Spacer(modifier = Modifier.height(8.dp))
 
+        // Campo de Senha com Visibilidade de Senha
         TextField(
             value = password,
             onValueChange = { password = it },
@@ -109,8 +112,10 @@ fun SignUpScreen(navController: NavController) {
                 }
             }
         )
+
         Spacer(modifier = Modifier.height(8.dp))
 
+        // Campo de Confirmação de Senha com Visibilidade de Senha
         TextField(
             value = confirmPassword,
             onValueChange = { confirmPassword = it },
@@ -136,6 +141,7 @@ fun SignUpScreen(navController: NavController) {
 
         Spacer(modifier = Modifier.height(16.dp))
 
+        // Exibir mensagem de erro, se houver
         if (errorMessage.isNotEmpty()) {
             Text(
                 text = errorMessage,
@@ -148,10 +154,11 @@ fun SignUpScreen(navController: NavController) {
 
         Spacer(modifier = Modifier.height(32.dp))
 
+        // Botão de Cadastro com estado de carregamento
         Button(
             onClick = {
                 if (password == confirmPassword) {
-                    isLoading = true // Iniciar o estado de carregamento
+                    isLoading = true
                     scope.launch {
                         val novoUsuario = Usuario(
                             id = null,
@@ -166,38 +173,35 @@ fun SignUpScreen(navController: NavController) {
                         } catch (e: Exception) {
                             errorMessage = "Erro ao criar a conta: ${e.message}"
                         } finally {
-                            isLoading = false // Parar o estado de carregamento
+                            isLoading = false
                         }
                     }
                 } else {
                     errorMessage = "As senhas não coincidem"
                 }
             },
-
-            enabled = !isLoading, // Desabilitar o botão durante o carregamento
+            enabled = !isLoading,
             colors = ButtonDefaults.buttonColors(
-                containerColor = Color.Black, // Fundo preto do botão
-                contentColor = Color.White    // Texto e ícone em branco
+                containerColor = Color.Black,
+                contentColor = Color.White
             ),
             modifier = Modifier
                 .fillMaxWidth()
                 .height(50.dp)
-
         ) {
             if (isLoading) {
                 CircularProgressIndicator(
-                    color = Color.Black,  // Ícone de carregamento em branco
+                    color = Color.White,
                     modifier = Modifier.size(24.dp)
-
                 )
             } else {
                 Text(text = "Cadastrar")
             }
         }
 
-
         Spacer(modifier = Modifier.weight(1f))
 
+        // Texto para redirecionar ao login
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center,
@@ -209,11 +213,7 @@ fun SignUpScreen(navController: NavController) {
                 color = Color.Black
             )
 
-            TextButton(
-                onClick = {
-                    navController.navigate("login_screen")
-                },
-            ) {
+            TextButton(onClick = { navController.navigate("login_screen") }) {
                 Text(
                     text = "Faça login aqui!",
                     style = MaterialTheme.typography.bodyLarge,

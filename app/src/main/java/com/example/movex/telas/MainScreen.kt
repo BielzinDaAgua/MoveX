@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Person
@@ -32,13 +31,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.movex.R
-/*import androidx.compose.material.icons.filled.Group*/
-import androidx.compose.material.icons.filled.ThumbUp
-import androidx.compose.material3.Button
 import androidx.lifecycle.viewmodel.compose.viewModel
 
 
@@ -261,6 +256,7 @@ fun DayTrainingCard(
             Text(
                 text = "$progress% concluído",
                 style = MaterialTheme.typography.bodyMedium,
+                color = Color.Black,
                 modifier = Modifier.padding(vertical = 8.dp)
             )
         }

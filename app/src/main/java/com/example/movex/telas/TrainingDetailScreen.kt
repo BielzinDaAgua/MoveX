@@ -24,15 +24,15 @@ fun TrainingDetailScreen(navController: NavController, day: String) {
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp)
-            .background(MaterialTheme.colorScheme.background),
+            .background(Color.White),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top
     ) {
-        Text(text = "Treino para $day", style = MaterialTheme.typography.titleLarge)
+        Text(text = "Treino para $day", style = MaterialTheme.typography.titleLarge, color = Color.Black)
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        Text(text = "Exercícios para Costas:", style = MaterialTheme.typography.headlineMedium)
+        Text(text = "Exercícios para Costas:", style = MaterialTheme.typography.headlineMedium, color = Color.Black)
 
         for (exercise in backExercises) {
             ExerciseCard(exercise = exercise, completedExercises = completedExercises) {
@@ -45,7 +45,7 @@ fun TrainingDetailScreen(navController: NavController, day: String) {
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        Text(text = "Exercícios para Bíceps:", style = MaterialTheme.typography.headlineMedium)
+        Text(text = "Exercícios para Bíceps:", style = MaterialTheme.typography.headlineMedium, color = Color.Black)
 
         for (exercise in bicepExercises) {
             ExerciseCard(exercise = exercise, completedExercises = completedExercises) {
@@ -67,7 +67,7 @@ fun TrainingDetailScreen(navController: NavController, day: String) {
                 .padding(top = 16.dp),
             colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFFA500)) // Cor laranja
         ) {
-            Text(text = "Voltar", color = Color.White)
+            Text(text = "Voltar", color = Color.Black)
         }
     }
 }
@@ -81,7 +81,10 @@ fun ExerciseCard(exercise: String, completedExercises: List<String>, onComplete:
             .fillMaxWidth()
             .padding(8.dp),
         shape = RoundedCornerShape(8.dp),
-        elevation = CardDefaults.cardElevation(4.dp),
+        elevation = CardDefaults.cardElevation(8.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = Color(0xFFF5F5F5)
+        ),
         border = BorderStroke(1.dp, Color(0xFFFFA500)) // Cor laranja para a borda
     ) {
         Row(
@@ -91,7 +94,7 @@ fun ExerciseCard(exercise: String, completedExercises: List<String>, onComplete:
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Text(text = exercise, style = MaterialTheme.typography.bodyLarge)
+            Text(text = exercise, style = MaterialTheme.typography.bodyLarge, color = Color.Black)
 
             Button(
                 onClick = {
@@ -101,7 +104,7 @@ fun ExerciseCard(exercise: String, completedExercises: List<String>, onComplete:
                 },
                 colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFFA500)) // Cor laranja
             ) {
-                Text(text = if (isCompleted) "Feito" else "Marcar como Feito", color = Color.White)
+                Text(text = if (isCompleted) "Feito" else "Marcar como Feito", color = Color.Black)
             }
         }
     }
