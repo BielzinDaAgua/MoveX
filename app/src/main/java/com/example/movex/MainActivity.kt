@@ -73,18 +73,18 @@ fun AppNavigation() {
             val userId = backStackEntry.arguments?.getInt("userId") ?: -1
             EditUserScreen(navController = navController, userId = userId)
         }
-        composable("personalize_screen/{userId}", arguments = listOf(navArgument("userId"){ defaultValue = -1 })
-        ){ backStackEntry ->
-            val userId = backStackEntry.arguments?.getInt("userId") ?: -1
-            PersonalizeScreen(navController = navController, userId = userId)
-        }
-        composable(
-            "group_screen/{userId}",
-            arguments = listOf(navArgument("userId") { defaultValue = -1 })
-        ) { backStackEntry ->
-            val userId = backStackEntry.arguments?.getInt("userId") ?: -1
-            GroupScreen(navController = navController, userId = userId)
-        }
+        //composable("personalize_screen/{userId}", arguments = listOf(navArgument("userId"){ defaultValue = -1 })
+        //){ backStackEntry ->
+        //    val userId = backStackEntry.arguments?.getInt("userId") ?: -1
+        //    PersonalizeScreen(navController = navController, userId = userId)
+        //}
+        //composable(
+        //    "group_screen/{userId}",
+        //    arguments = listOf(navArgument("userId") { defaultValue = -1 })
+        //) { backStackEntry ->
+        //    val userId = backStackEntry.arguments?.getInt("userId") ?: -1
+        //    GroupScreen(navController = navController, userId = userId)
+        //}
         composable("running_screen/{userId}") { backStackEntry ->
             val userId = backStackEntry.arguments?.getString("userId")?.toIntOrNull() ?: 0
             RunningScreen(navController, userId)

@@ -130,14 +130,14 @@ fun BottomNavigationBar(navController: NavController, userId: Int) {
                     navController.navigate("main_screen/$userId")
                 }
             )
-            BottomNavigationItem(
-                icon = Icons.Default.Add,
-                label = "person",
-                isSelected = false,
-                onClick = {
-                    navController.navigate("personalize_screen/$userId")
-                }
-            )
+            //BottomNavigationItem(
+            //    icon = Icons.Default.Add,
+            //    label = "person",
+            //    isSelected = false,
+            //    onClick = {
+            //        navController.navigate("personalize_screen/$userId")
+            //    }
+            //)
             BottomNavigationItem(
                 icon = Icons.Default.Person,
                 label = "Profile",
@@ -155,14 +155,14 @@ fun BottomNavigationBar(navController: NavController, userId: Int) {
                 }
             )
 
-            BottomNavigationItem(
-                icon = Icons.Default.ThumbUp,
-                label = "Profile",
-                isSelected = false,
-                onClick = {
-                    navController.navigate("group_screen/$userId")
-                }
-            )
+            //BottomNavigationItem(
+            //    icon = Icons.Default.ThumbUp,
+            //    label = "Profile",
+            //    isSelected = false,
+            //    onClick = {
+            //        navController.navigate("group_screen/$userId")
+            //    }
+            //)
         }
     }
 }
