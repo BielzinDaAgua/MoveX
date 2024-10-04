@@ -26,18 +26,27 @@ class UsuarioDAO {
             throw IllegalArgumentException("O email já está em uso.")
         }
 
-        // Definir imagem de perfil padrão se não estiver definida
-        val fotoUrlPadrao = "gs://movex-51484.appspot.com/perfil/default_profile_picture.jpg"
+        // Definir a referência da imagem de perfil padrão no Firebase Storage
+        val storageRef = storage.reference.child("perfil/default_profile_picture.jpg")
+
+        // Obter a URL de download da imagem de perfil padrão
+        val fotoUrlPadrao = storageRef.downloadUrl.await().toString()
+
+        // Verificar se o campo fotoUrl do usuário está vazio
         val usuarioComFoto = if (usuario.fotoUrl.isNullOrEmpty()) {
             usuario.copy(fotoUrl = fotoUrlPadrao)
         } else {
             usuario
         }
 
+        // Gerar novo ID para o usuário
         val newId = gerarNovoId()
         val usuarioComId = usuarioComFoto.copy(id = newId)
+
+        // Adicionar o usuário ao Firestore
         usuariosCollection.document(newId.toString()).set(usuarioComId).await()
     }
+
 
 
     suspend fun removerUsuario(id: Long) {

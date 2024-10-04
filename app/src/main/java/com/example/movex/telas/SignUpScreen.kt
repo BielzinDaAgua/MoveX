@@ -32,6 +32,7 @@ fun SignUpScreen(navController: NavController) {
     var passwordVisible by remember { mutableStateOf(false) } // Estado para controlar visibilidade da senha
     var confirmPasswordVisible by remember { mutableStateOf(false) } // Estado para controlar visibilidade da confirmação de senha
     var errorMessage by remember { mutableStateOf("") }
+    var isLoading by remember { mutableStateOf(false) } // Estado para controlar o carregamento
     val usuarioDAO = UsuarioDAO()
     val scope = rememberCoroutineScope()
 
@@ -150,6 +151,7 @@ fun SignUpScreen(navController: NavController) {
         Button(
             onClick = {
                 if (password == confirmPassword) {
+                    isLoading = true // Iniciar o estado de carregamento
                     scope.launch {
                         val novoUsuario = Usuario(
                             id = null,
@@ -163,6 +165,8 @@ fun SignUpScreen(navController: NavController) {
                             navController.navigate("login_screen")
                         } catch (e: Exception) {
                             errorMessage = "Erro ao criar a conta: ${e.message}"
+                        } finally {
+                            isLoading = false // Parar o estado de carregamento
                         }
                     }
                 } else {
@@ -170,18 +174,30 @@ fun SignUpScreen(navController: NavController) {
                 }
             },
 
+            enabled = !isLoading, // Desabilitar o botão durante o carregamento
             colors = ButtonDefaults.buttonColors(
-                containerColor = Color.Black,
-                contentColor = Color.White
+                containerColor = Color.Black, // Fundo preto do botão
+                contentColor = Color.White    // Texto e ícone em branco
             ),
-            modifier = Modifier.fillMaxWidth().height(50.dp)
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(50.dp)
+
         ) {
-            Text(text = "Cadastrar")
+            if (isLoading) {
+                CircularProgressIndicator(
+                    color = Color.Black,  // Ícone de carregamento em branco
+                    modifier = Modifier.size(24.dp)
+
+                )
+            } else {
+                Text(text = "Cadastrar")
+            }
         }
 
-        Spacer(modifier = Modifier.weight(1f))
 
         Spacer(modifier = Modifier.weight(1f))
+
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center,
@@ -205,6 +221,7 @@ fun SignUpScreen(navController: NavController) {
                 )
             }
         }
+
         Spacer(modifier = Modifier.height(16.dp))
     }
 }
